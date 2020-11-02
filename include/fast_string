@@ -134,14 +134,14 @@ namespace fast {
 
 			// integer to string conversion
 			::std::to_chars_result i_res;
-			if (::std::abs(f) >= ::fast::ipow<num_t, 2, 31>::value) {
+			if (::std::abs(f) >= ::fast::ipow<num_t, 2, 31>::value - 1) {
 				i_raw64[0] <<= 1 + 11 + 1; i_raw64[0] >>= 1 + 11 + 1; // sign replication
 				i_res = ::std::to_chars(s.data(), s.data() + s.capacity() - 1, i_raw64[0]); // conversion
 				if (i_res.ec == ::std::errc::value_too_large) { // fallback conversion
 					s = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"s; // "+/-15.15f"
 					i_res = ::std::to_chars(s.data(), s.data() + s.capacity() - 1, i_raw64[0]);
 				}
-			} else if (::std::abs(f) >= ::fast::ipow<num_t, 2, 15>::value) {
+			} else if (::std::abs(f) >= ::fast::ipow<num_t, 2, 15>::value - 1) {
 				i_res = ::std::to_chars(s.data(), s.data() + s.capacity() - 1, i_raw32[0]);
 			} else {
 				i_res = ::std::to_chars(s.data(), s.data() + s.capacity() - 1, i_raw16[0]);
